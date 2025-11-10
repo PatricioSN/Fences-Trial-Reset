@@ -1,5 +1,5 @@
 import os
-import sys
+from tkinter import filedialog
 
 path = r"C:\ProgramData\Stardock\Fences4"
 
@@ -12,15 +12,37 @@ def verify_files(default_path):
 
 #Deletes the Cache & License files, reseting the application
 def reset_cache(path):
-    #TODO: Precisa primeiro pegar a parte inteira do path dos arquivos.
-    # Precisamos pegar o caminho atua, e dar .join() com o nome dos arquivos, o resultado será o parâmetro para a func remove deletar.
+    #TODO: finalizar
     os.remove("License.sig")
     os.remove("Cache.dat")
 
 
+def Manual_find_files():
+    # User selects the path to the Fences4 folder
+    license_locate = filedialog.askopenfilename(title="Selecione o arquivo 'License.sig'")
+
+    if verify_files(license_locate):
+        path = license_locate
+    else:
+        print("Arquivo não reconhecido")
+
+def Auto_find_files():
+    #TODO: terminar essa func
+    pass
+
+# If the program doesn't find the files, this class will be called to find them'
+def find_files():
+    input(r"Seus arquivos não foram encontrados. :/ \n "
+          "Deseja Informar Manualmente ou realizar uma busca automática?: \n"
+          "[1] - Manual \n"
+          "[2] - Automática")
+    if input == 1:
+        Manual_find_files()
+    elif input == 2:
+        Auto_find_files()
+
 
 if __name__ == "__main__":
-    verify_files(path)
     if not verify_files(path):
-        # TODO: Caso o programa não consiga achar os arquivos na pasta padrão, esta funcao deve ser chamada para procurar onde os arquivos estao
-        pass
+        find_files()
+    reset_cache(path)
