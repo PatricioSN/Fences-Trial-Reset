@@ -1,5 +1,4 @@
 import os
-import tkinter as tk
 from tkinter import filedialog
 
 class Trial:
@@ -30,19 +29,16 @@ class Trial:
 
 
     def manual_find_files(self):
-        root = tk.Tk()
-        root.mainloop()
-        root.withdraw()
         # User selects the path to the Fences4 folder
+
         license_locate = os.path.dirname(filedialog.askopenfilename(title="Select the 'License.sig' file."))
-        root.destroy()
 
         if self.verify_files(license_locate):
             #TODO: Criar um método para salvar essa informação,
             # para o usuário não precisar informar toda vez
             # (pensei em usar um .txt).
             self.path = license_locate
-            return path
+            return license_locate
         else:
             print("File not found.")
             raise SystemError
