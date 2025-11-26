@@ -1,5 +1,9 @@
 import os
 from tkinter import filedialog
+import crossfiledialog
+import win32api
+import win32con
+import win32gui
 
 class Trial:
     def __init__(self):
@@ -30,8 +34,8 @@ class Trial:
 
     def manual_find_files(self):
         # User selects the path to the Fences4 folder
-
-        license_locate = os.path.dirname(filedialog.askopenfilename(title="Select the 'License.sig' file."))
+        license_locate = crossfiledialog.open_file(title="Select the 'License.sig' file.")
+        license_locate = os.path.dirname(license_locate)
 
         if self.verify_files(license_locate):
             #TODO: Criar um método para salvar essa informação,
@@ -44,10 +48,25 @@ class Trial:
             raise SystemError
 
 
-    def auto_find_files(self):
-        #TODO: terminar essa func
-        pass
+    def auto_find_files(self, root, terms):
+        results = []
+        terms = [t.lower() for t in terms]
 
+        for root, dirs, files in os.walk(root):
+            for f in files:
+                print(f)
+                name_lower = f.lower()
+                if any(t in name_lower for t in terms):
+                    results.append(os.path.join(root, f))
+
+        #Breakpoint for the user certify is the file found is correct.
+        print("Results:", results)
+        print("Is this correct?")
+        response = input("Press 'Y' to continue...")
+
+        if response.upper() == "Y":
+            return results
+        return None
 
     # If the program doesn't find the files, this class will be called to find them'
     def find_files(self):
@@ -61,7 +80,7 @@ class Trial:
             if choice == 1:
                 return self.manual_find_files()
             elif choice == 2:
-                return self.auto_find_files()
+                return self.auto_find_files(r"C:\\", ["Cache.dat", "License.sig"])
             else:
                 print("Invalid input.")
 
