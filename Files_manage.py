@@ -53,8 +53,8 @@ class Trial:
         terms = [t.lower() for t in terms]
 
         for root, dirs, files in os.walk(root):
+            print(root)
             for f in files:
-                print(f)
                 name_lower = f.lower()
                 if any(t in name_lower for t in terms):
                     results.append(os.path.join(root, f))
