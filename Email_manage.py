@@ -1,25 +1,10 @@
-import pyautogui
 import time
+import webbrowser
+import pyautogui
+from tempmail import EMail
+from bs4 import BeautifulSoup
 
-#If the PC is a potato
-pyautogui.PAUSE = 0.5
+def create_email():
+    email = EMail()
+    return email
 
-#abrir o fences
-pyautogui.press('winleft')
-pyautogui.write('fences')
-pyautogui.press('enter')
-
-#clicar em 'start trial'
-time.sleep(1)
-position = pyautogui.locateCenterOnScreen(r"Assets\Start_30_Day_Trial.png")
-pyautogui.click(position)
-
-#TODO: 3- criar um email temporario
-
-#TODO: 4- informar esse email temporario para o fences
-
-#TODO: 5- clica em proximo
-
-#TODO: 6- verificar a caixa de mensagens do email
-
-#TODO: 7- clicar no link dentro do email recebido
