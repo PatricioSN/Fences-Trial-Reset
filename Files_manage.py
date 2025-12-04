@@ -1,5 +1,4 @@
 import os
-from tkinter import filedialog
 import crossfiledialog
 import win32api
 import win32con

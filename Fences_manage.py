@@ -4,15 +4,16 @@ import time
 #If the PC is a potato
 pyautogui.PAUSE = 0.5
 
-#abrir o fences
+#Open fences
 pyautogui.press('winleft')
 pyautogui.write('fences')
 pyautogui.press('enter')
 
-#clicar em 'start trial'
+#click on 'start trial'
 time.sleep(1)
 position = pyautogui.locateCenterOnScreen(r"Assets\Start_30_Day_Trial.png")
 pyautogui.click(position)
+
 
 #TODO: 3- criar um email temporario
 
