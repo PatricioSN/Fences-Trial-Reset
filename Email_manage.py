@@ -4,8 +4,10 @@ import re
 import requests
 
 class Email_manage:
-    def __init__(self):
+    def __init__(self, email_address = None, email = None):
         self.done = False
+        self.email_address = email_address
+        self.email = email
 
     def listener(self, message):
         raw = message.get('html') or message.get('text') or ''
@@ -30,21 +32,29 @@ class Email_manage:
                 self.done = True
                 return
 
-    def run(self):
+    def email_creation(self):
         temp_email = Email()
         temp_email.register() #create a new random email
-        print("\nEmail Adress: " + str(temp_email.address))
 
-        temp_email.start(self.listener)
+        print("\nEmail Address: " + str(temp_email.address))
+
+        self.email = temp_email
+        self.email_address = temp_email.address
+
+    def email_listener(self):
+        self.email.start(self.listener)
 
         #flag to wait until the activation link is found
         while not self.done:
             time.sleep(0.1)
 
         #close the email
-        temp_email.stop()
+        self.email.stop()
 
-
+if __name__ == "__main__":
+    email_manage = Email_manage()
+    email_manage.email_creation()
+    email_manage.email_listener()
 
 
 
