@@ -1,8 +1,5 @@
 import os
 import crossfiledialog
-import win32api
-import win32con
-import win32gui
 
 class Trial:
     def __init__(self):
