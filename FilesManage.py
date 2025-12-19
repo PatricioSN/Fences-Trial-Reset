@@ -1,7 +1,7 @@
 import os
 import crossfiledialog
 
-class Trial:
+class FilesManage:
     def __init__(self):
         self.path = r"C:\ProgramData\Stardock\Fences4"
 
@@ -16,13 +16,11 @@ class Trial:
 
     #Deletes the Cache & License files, reseting the application
     def reset_cache(self):
-        #Nota: O arquivo já deve ter sido verificado e retornado como True a esse ponto.
         try:
             cache_path = os.path.join(self.path, "Cache.dat")
             license_path = os.path.join(self.path, "License.sig")
             os.remove(cache_path)
             os.remove(license_path)
-        #Nota: Arrumar esse except feioso.
         except Exception as e:
             print("Error deleting files: ", e)
 
@@ -82,11 +80,11 @@ class Trial:
 
 
     def run(self):
-        if not trial.verify_files():
+        if not self.verify_files():
             self.path = trial.find_files()
-        trial.reset_cache()
+        self.reset_cache()
 
 
 if __name__ == "__main__":
-    trial = Trial()
+    trial = FilesManage()
     trial.run()

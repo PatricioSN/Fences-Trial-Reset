@@ -3,7 +3,7 @@ from mailtm import Email
 import re
 import requests
 
-class Email_manage:
+class EmailManage:
     def __init__(self, email_address = None, email = None):
         self.done = False
         self.email_address = email_address
@@ -42,7 +42,7 @@ class Email_manage:
         self.email.stop() #close the email
 
 if __name__ == "__main__":
-    email_manage = Email_manage()
+    email_manage = EmailManage()
     email_manage.email_creation()
     email_manage.email_listener()
 

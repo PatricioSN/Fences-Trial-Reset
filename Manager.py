@@ -1,10 +1,10 @@
-from Fences_manage import Fences_manage
-from Files_manage import Trial
+from FencesManage import FencesManage
+from FilesManage import FilesManage
 
 class Manager:
     def run(self):
-        Fences = Fences_manage()
-        Files = Trial()
+        Fences = FencesManage()
+        Files = FilesManage()
 
         Files.run()
         Fences.prepare_email()

@@ -1,12 +1,12 @@
 import pyautogui
 import time
-from Email_manage import Email_manage
+from EmailManage import EmailManage
 import pyperclip
 
-class Fences_manage:
+class FencesManage:
     def __init__(self):
         pyautogui.PAUSE = 0.5
-        self.email = Email_manage()#Create a Randomly email
+        self.email = EmailManage()#Create a Randomly email
 
     def prepare_email(self):
         self.email.email_creation()
@@ -47,7 +47,7 @@ class Fences_manage:
         self.email.email_listener()
 
 if __name__ == "__main__":
-    app = Fences_manage()
+    app = FencesManage()
     app.prepare_email()
     app.open_fences()
     app.start_trial()
