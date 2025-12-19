@@ -1,179 +1,189 @@
 # Fences Security Analysis – Trial & Licensing Weaknesses
 
-## Visão geral
+> 🇧🇷 Versão em português disponível em: [README.pt-BR.md](README.pt-BR.md)
 
-Este projeto tem caráter **educacional e técnico** e foi desenvolvido com o objetivo de **analisar falhas comuns de segurança em mecanismos de licenciamento baseados em estado local**.
+## Overview
 
-O foco não é a quebra de um software específico, mas a **demonstração prática de como decisões arquiteturais frágeis permitem que um programa simples induza um software a reiniciar seu período de avaliação**, sem necessidade de engenharia reversa avançada ou modificação de binários.
+This project is **educational and technical in nature** and was developed with the goal of **analyzing common security weaknesses in licensing mechanisms based on local state**.
 
-O projeto foi pensado sob a ótica de **Red Team / análise defensiva**, visando estudo, documentação e melhoria de práticas de segurança.
+The focus is not on breaking a specific piece of software, but on a **practical demonstration of how fragile architectural decisions can allow a simple program to induce a software application to reset its trial period**, without requiring advanced reverse engineering or binary modification.
 
----
-
-## Escopo e modelo de ameaça (Threat Model)
-
-O cenário analisado considera um atacante com as seguintes capacidades:
-
-- Acesso local ao sistema operacional
-- Nenhuma modificação direta no binário do software alvo
-- Nenhum bypass de DRM em nível de kernel
-- Nenhuma exploração de vulnerabilidades de memória
-- Apenas interação com:
-  - arquivos
-  - fluxos normais de ativação
-  - comportamento padrão do sistema
-
-Esse modelo representa um **usuário comum**, não um atacante avançado — justamente onde muitos mecanismos de licenciamento falham.
+The project was designed from a **Red Team / defensive analysis perspective**, aiming at study, documentation, and improvement of security practices.
 
 ---
 
-## Arquitetura de licenciamento analisada (alto nível)
+## Scope and Threat Model
 
-A análise revelou um modelo de licenciamento baseado principalmente em:
+The analyzed scenario considers an attacker with the following capabilities:
 
-- **Artefatos locais persistentes**
-- Estado de trial armazenado no sistema
-- Validação de ativação previsível
-- Ausência de verificação forte de integridade
+- Local access to the operating system  
+- No direct modification of the target software binary  
+- No kernel-level DRM bypass  
+- No memory corruption or exploitation  
+- Interaction limited to:
+  - files  
+  - normal activation flows  
+  - standard system behavior  
 
-Nesse modelo, o estado local é tratado como **fonte de verdade**, o que introduz fragilidades críticas quando não há mecanismos adicionais de proteção.
-
----
-
-## Fluxo de funcionamento do projeto (visão técnica controlada)
-
-Esta seção descreve o fluxo interno da aplicação, com o objetivo de demonstrar como decisões arquiteturais inseguras podem ser exploradas, sem fornecer instruções operacionais para reprodução do comportamento.
-
-1. **Identificação do estado local do software:**
-
-    O projeto inicia verificando a existência de artefatos locais utilizados pelo software analisado para representar o estado de ativação e uso do período de avaliação.
-    Esses artefatos são tratados pelo sistema como fonte de verdade, sem validação externa adicional.
-
-**Ponto de falha evidenciado:** confiança irrestrita em estado local persistente.
-
-2. **Normalização do ambiente de execução**
-
-    Ao identificar que o estado local representa um uso anterior, a aplicação força a criação de um novo contexto de execução logicamente equivalente a uma primeira utilização do software.
-    
-    Nenhum binário é modificado e nenhuma proteção é desativada — o comportamento explorado já é aceito pelo próprio fluxo normal da aplicação.
-    
-**Ponto de falha evidenciado:** ausência de vínculo forte entre estado local e identidade do sistema.
-
-3. **Automação de interações legítimas**
-
-    Com o ambiente normalizado, o projeto automatiza apenas interações já previstas pela interface oficial, simulando ações de um usuário comum.
-    
-    Essa etapa demonstra que o sistema não diferencia interação humana de automação, nem aplica controles adicionais em fluxos críticos.
-
-**Ponto de falha evidenciado:** ausência de mecanismos anti-automação ou validação comportamental.
-
-4. Dependência fraca de identidade
-
-    O processo de ativação temporária aceita informações voláteis como suficientes para validar o período de avaliação, sem exigir associação persistente com hardware, conta autenticada ou identidade criptográfica.
-
-**Ponto de falha evidenciado:** modelo de licenciamento desacoplado de identidade confiável.
-
-5. Resultado observado
-
-O software interpreta o novo contexto como uma execução legítima inicial, evidenciando que o mecanismo de proteção depende exclusivamente de fatores locais e previsíveis.
-
-O projeto demonstra que complexidade técnica não é requisito para falhas graves, quando decisões arquiteturais inadequadas estão presentes.
+This model represents a **regular user**, not an advanced attacker — precisely where many licensing mechanisms fail.
 
 ---
 
-## Classes de falhas de segurança identificadas
+## Licensing Architecture Analyzed (High-Level)
 
-### 1. Confiança excessiva em estado local
+The analysis revealed a licensing model primarily based on:
 
-O software assume que informações armazenadas localmente são íntegras e confiáveis.
+- **Persistent local artifacts**  
+- Trial state stored on the system  
+- Predictable activation validation  
+- Lack of strong integrity verification  
 
-  
- Desse modo qualquer dado local pode ser removido, recriado ou revertido sem que o software perceba, caso não exista verificação externa ou criptográfica.
-
----
-
-### 2. Ausência de verificação de integridade forte
-
-Os artefatos responsáveis por controlar o estado do trial não apresentam:
-
-- Assinatura criptográfica robusta
-- Detecção de rollback de estado
-- Proteção contra recriação de contexto válido
-
-Isso permite que estados antigos ou “limpos” sejam aceitos como legítimos.
+In this model, local state is treated as a **source of truth**, which introduces critical weaknesses when no additional protection mechanisms are present.
 
 ---
 
-### 3. Falta de vinculação entre licença e identidade
+## Project Execution Flow (Controlled Technical View)
 
-O estado de ativação não está fortemente vinculado a:
+This section describes the internal flow of the application, aiming to demonstrate how insecure architectural decisions can be abused **without providing operational instructions to reproduce the behavior**.
 
-- hardware
-- identidade criptográfica
-- TPM
-- fingerprint confiável do sistema
+### 1. Identification of the Software’s Local State
 
-Sem essa vinculação, o software não consegue distinguir entre um ambiente novo e um ambiente artificialmente reinicializado.
+The project begins by verifying the existence of local artifacts used by the analyzed software to represent activation state and trial usage.
 
----
+These artifacts are treated by the system as a source of truth, without additional external validation.
 
-### 4. Fluxo de ativação determinístico
-
-O processo de ativação segue um fluxo previsível e automatizável.
-
-Isso facilita:
-- repetição de comportamento
-- simulação de novos estados
-- reinicialização lógica do trial
-
-Não há desafios dinâmicos nem validações adaptativas.
+**Observed weakness:** unrestricted trust in persistent local state.
 
 ---
 
-## Como este projeto demonstra essas falhas
+### 2. Execution Environment Normalization
 
-O código deste repositório **não explora vulnerabilidades de baixo nível**.
+When the local state indicates prior usage, the application forces the creation of a new execution context logically equivalent to a first-time software execution.
 
-Ele apenas:
-- automatiza interações legítimas do sistema operacional
-- manipula estados locais tratados como confiáveis pelo software
-- evidencia como a ausência de validações robustas permite a reinicialização do período de avaliação
+No binaries are modified and no protections are disabled — the exploited behavior is already accepted by the software’s normal execution flow.
 
-O objetivo é **demonstrar o problema arquitetural**, não fornecer um exploit reutilizável, peço para que não deturpe o projeto para fins ilegais.
+**Observed weakness:** lack of strong binding between local state and system identity.
 
 ---
 
-## Impacto de segurança
+### 3. Automation of Legitimate Interactions
 
-As falhas observadas permitem:
+With the environment normalized, the project automates only interactions already provided by the official interface, simulating actions of a regular user.
 
-- Bypass do modelo de trial
-- Reutilização indefinida do período de avaliação
-- Quebra da confiança no mecanismo de licenciamento
-- Replicação do mesmo problema em outros softwares com arquitetura similar
+This step demonstrates that the system does not differentiate between human interaction and automation, nor does it apply additional controls to critical flows.
 
-Esse tipo de falha é especialmente crítico por **não exigir conhecimento técnico avançado** para ser explorado.
+**Observed weakness:** absence of anti-automation mechanisms or behavioral validation.
 
 ---
 
-## Recomendações defensivas
+### 4. Weak Identity Binding
 
-Algumas medidas que mitigariam esse tipo de problema:
+The temporary activation process accepts volatile information as sufficient to validate the trial period, without requiring persistent association with hardware, authenticated accounts, or cryptographic identity.
 
-- Vincular licenças a identidades criptográficas
-- Assinar estados de ativação com verificação forte de integridade
-- Implementar detecção de rollback
-- Evitar confiança exclusiva em estado local
-- Introduzir validações dinâmicas no fluxo de ativação
-
-Essas práticas reduzem drasticamente a viabilidade desse tipo de bypass.
+**Observed weakness:** licensing model loosely coupled to reliable identity.
 
 ---
 
-## Aviso legal
+### 5. Observed Outcome
 
-Este projeto foi desenvolvido **exclusivamente para fins educacionais e de análise de segurança**.
+The software interprets the new context as a legitimate initial execution, demonstrating that the protection mechanism relies exclusively on local and predictable factors.
 
-O autor não se responsabiliza pelo uso indevido das informações aqui apresentadas.  
-O objetivo é promover **boas práticas de segurança**, não violar termos de uso de softwares comerciais.
+The project shows that **technical complexity is not required for severe security failures** when architectural decisions are inadequate.
 
+---
+
+## Identified Classes of Security Weaknesses
+
+### 1. Excessive Trust in Local State
+
+The software assumes that locally stored information is intact and trustworthy.
+
+As a result, local data can be removed, recreated, or reverted without detection when no external or cryptographic verification exists.
+
+---
+
+### 2. Absence of Strong Integrity Verification
+
+The artifacts responsible for controlling the trial state lack:
+
+- Robust cryptographic signatures  
+- Rollback detection  
+- Protection against recreation of valid contexts  
+
+This allows old or “clean” states to be accepted as legitimate.
+
+---
+
+### 3. Lack of License-to-Identity Binding
+
+The activation state is not strongly bound to:
+
+- hardware  
+- cryptographic identity  
+- TPM  
+- reliable system fingerprinting  
+
+Without such binding, the software cannot distinguish between a genuinely new environment and an artificially reset one.
+
+---
+
+### 4. Deterministic Activation Flow
+
+The activation process follows a predictable and automatable flow.
+
+This facilitates:
+- behavior repetition  
+- simulation of new states  
+- logical trial reset  
+
+There are no dynamic challenges or adaptive validations.
+
+---
+
+## How This Project Demonstrates These Weaknesses
+
+The code in this repository **does not exploit low-level vulnerabilities**.
+
+It simply:
+- automates legitimate operating system interactions  
+- manipulates local states treated as trustworthy by the software  
+- highlights how the absence of robust validation enables trial period reset  
+
+The goal is to **demonstrate the architectural problem**, not to provide a reusable exploit.  
+Please do not misuse or repurpose this project for illegal activities.
+
+---
+
+## Security Impact
+
+The observed weaknesses allow:
+
+- Trial model bypass  
+- Indefinite reuse of the evaluation period  
+- Loss of trust in the licensing mechanism  
+- Replication of the same issue across other software with similar architectures  
+
+This class of vulnerability is especially critical because it **does not require advanced technical knowledge** to be exploited.
+
+---
+
+## Defensive Recommendations
+
+Several measures could mitigate this type of issue:
+
+- Bind licenses to cryptographic identities  
+- Sign activation states with strong integrity verification  
+- Implement rollback detection  
+- Avoid exclusive reliance on local state  
+- Introduce dynamic validation in activation flows  
+
+These practices significantly reduce the feasibility of this type of bypass.
+
+---
+
+## Legal Notice
+
+This project was developed **exclusively for educational and security analysis purposes**.
+
+The author is not responsible for misuse of the information presented here.  
+The objective is to promote **secure software design practices**, not to violate the terms of use of commercial software.
