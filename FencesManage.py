@@ -2,33 +2,46 @@ import pyautogui
 import time
 from EmailManage import EmailManage
 import pyperclip
+import logging
+
 
 class FencesManage:
     def __init__(self):
         pyautogui.PAUSE = 0.5
-        self.email = EmailManage()#Create a Randomly email
+        self.email = EmailManage() #Create a Randomly email
 
-    def prepare_email(self):
+    def _wait_for_image(self, image_path: str, timeout: int = 5):
+        start = time.time()
+        while time.time() - start < timeout:
+            position = pyautogui.locateCenterOnScreen(image_path)
+            if position:
+                return position
+            time.sleep(0.2)
+        raise TimeoutError("Image not found")
+
+    def prepare_email(self) -> None:
         self.email.email_creation()
         pyperclip.copy(self.email.email_address) #copy the email to the clipboard
+        logging.info("Email copied to clipboard")
 
     def open_fences(self):
         pyautogui.press('winleft')
         pyautogui.write('fences')
         pyautogui.press('enter')
+        time.sleep(0.5)
 
-    def start_trial(self):
+    def start_trial(self) -> None:
         try:
             time.sleep(0.5)
-            position = pyautogui.locateCenterOnScreen(
+            position = self._wait_for_image(
                 r"Assets\Start_30_Day_Trial.png"
             )
         #Tries two times, because the fences have a problem sometimes. If you immediately delete the cache, maybe the program doesn't open the screen of the trial test
-        except pyautogui.ImageNotFoundException:
+        except pyautogui.ImageNotFoundException or TimeoutError:
+            logging.warning("Trial screen not found, retrying...")
             pyautogui.hotkey('alt','f4')
             self.open_fences()
-            time.sleep(0.5)
-            position = pyautogui.locateCenterOnScreen(
+            position = self._wait_for_image(
                 r"Assets\Start_30_Day_Trial.png"
             )
         pyautogui.click(position)
@@ -38,12 +51,12 @@ class FencesManage:
         pyautogui.hotkey('ctrl', 'a')
         pyautogui.hotkey('ctrl', 'v')
 
-        time.sleep(0.5)
-        position = pyautogui.locateCenterOnScreen(r"Assets\Continue_Fences.png")
+
+        position = self._wait_for_image(r"Assets\Continue_Fences.png")
         pyautogui.click(position)
 
 
-    def listen_email(self):
+    def listen_email(self) -> None:
         self.email.email_listener()
 
 if __name__ == "__main__":

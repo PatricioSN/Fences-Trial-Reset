@@ -1,13 +1,25 @@
 from FencesManage import FencesManage
 from FilesManage import FilesManage
+import logging
+import sys
+
+handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter(
+    "%(asctime)s [%(levelname)s] %(message)s"
+)
+handler.setFormatter(formatter)
+
+logging.getLogger().handlers.clear()
+logging.getLogger().addHandler(handler)
+logging.getLogger().setLevel(logging.INFO)
 
 class Manager:
     def run(self):
-        Fences = FencesManage()
-        Files = FilesManage()
+        fences = FencesManage()
+        files = FilesManage()
 
-        Files.run()
-        Fences.prepare_email()
-        Fences.open_fences()
-        Fences.start_trial()
-        Fences.listen_email()
+        files.run()
+        fences.prepare_email()
+        fences.open_fences()
+        fences.start_trial()
+        fences.listen_email()
