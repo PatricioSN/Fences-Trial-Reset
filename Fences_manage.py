@@ -19,6 +19,7 @@ class Fences_manage:
 
     def start_trial(self):
         try:
+            time.sleep(0.5)
             position = pyautogui.locateCenterOnScreen(
                 r"Assets\Start_30_Day_Trial.png"
             )

@@ -81,11 +81,12 @@ class Trial:
                 print("Invalid input.")
 
 
+    def run(self):
+        if not trial.verify_files():
+            self.path = trial.find_files()
+        trial.reset_cache()
 
-    #TODO: Definir um modo para que o caminho informado pelo user não se perca.
-    # Provavelmente o melhor modo seja retornar um arquivo txt simples que armazena o caminho.
+
 if __name__ == "__main__":
     trial = Trial()
-    if not trial.verify_files():
-        path = trial.find_files()
-    trial.reset_cache()
+    trial.run()
