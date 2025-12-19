@@ -1,6 +1,6 @@
 import pyautogui
 import time
-from EmailManage import EmailManage
+from email_manager import EmailManage
 import pyperclip
 import logging
 
@@ -34,7 +34,7 @@ class FencesManage:
         try:
             time.sleep(0.5)
             position = self._wait_for_image(
-                r"Assets\Start_30_Day_Trial.png"
+                r"../Assets/Start_30_Day_Trial.png"
             )
         #Tries two times, because the fences have a problem sometimes. If you immediately delete the cache, maybe the program doesn't open the screen of the trial test
         except pyautogui.ImageNotFoundException or TimeoutError:
@@ -42,7 +42,7 @@ class FencesManage:
             pyautogui.hotkey('alt','f4')
             self.open_fences()
             position = self._wait_for_image(
-                r"Assets\Start_30_Day_Trial.png"
+                r"../Assets/Start_30_Day_Trial.png"
             )
         pyautogui.click(position)
 
@@ -52,7 +52,7 @@ class FencesManage:
         pyautogui.hotkey('ctrl', 'v')
 
 
-        position = self._wait_for_image(r"Assets\Continue_Fences.png")
+        position = self._wait_for_image(r"../Assets/Continue_Fences.png")
         pyautogui.click(position)
 
 

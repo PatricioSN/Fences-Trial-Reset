@@ -1,5 +1,5 @@
-from FencesManage import FencesManage
-from FilesManage import FilesManage
+from fences_manager import FencesManage
+from files_manager import FilesManage
 import logging
 import sys
 
