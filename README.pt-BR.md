@@ -49,6 +49,7 @@ Esta seção descreve o fluxo interno da aplicação, com o objetivo de demonstr
     O projeto inicia verificando a existência de artefatos locais utilizados pelo software analisado para representar o estado de ativação e uso do período de avaliação.
     Esses artefatos são tratados pelo sistema como fonte de verdade, sem validação externa adicional.
 
+
 **Ponto de falha evidenciado:** confiança irrestrita em estado local persistente.
 
 2. **Normalização do ambiente de execução**

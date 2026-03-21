@@ -81,7 +81,7 @@ class FilesManage:
                 "Do you want to enter manually or perform an automatic search?:\n"
                 "[1] - Manually\n"
                 "[2] - Automatic\n"
-                "[3] - Files have already been deleted."
+                "[3] - Files have already been deleted.\n"
             ))
             if choice == 1:
                 return self.manual_find_files()
