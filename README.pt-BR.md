@@ -87,6 +87,12 @@ Esta seção descreve o fluxo interno da aplicação, com o objetivo de demonstr
 
     O projeto demonstra que complexidade técnica não é requisito para falhas graves, quando decisões arquiteturais inadequadas estão presentes.
 
+   
+
+https://github.com/user-attachments/assets/6423012f-c550-40d0-a5cd-f01297197f82
+
+
+
 ---
 
 ## Classes de falhas de segurança identificadas
