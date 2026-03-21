@@ -52,6 +52,9 @@ The project begins by verifying the existence of local artifacts used by the ana
 
 These artifacts are treated by the system as a source of truth, without additional external validation.
 
+<img width="1265" height="673" alt="image" src="https://github.com/user-attachments/assets/6d5c444e-3fb1-428b-88c3-85a72da59345" />
+
+
 **Observed weakness:** unrestricted trust in persistent local state.
 
 ---
@@ -69,6 +72,8 @@ No binaries are modified and no protections are disabled — the exploited behav
 ### 3. Automation of Legitimate Interactions
 
 With the environment normalized, the project automates only interactions already provided by the official interface, simulating actions of a regular user.
+
+<img width="1600" height="751" alt="image" src="https://github.com/user-attachments/assets/eba9997f-34b0-43bf-9eed-fa739f798603" />
 
 This step demonstrates that the system does not differentiate between human interaction and automation, nor does it apply additional controls to critical flows.
 
@@ -88,7 +93,11 @@ The temporary activation process accepts volatile information as sufficient to v
 
 The software interprets the new context as a legitimate initial execution, demonstrating that the protection mechanism relies exclusively on local and predictable factors.
 
+<img width="1600" height="241" alt="image" src="https://github.com/user-attachments/assets/1419dda8-55c8-4897-92f2-1c7cd01e6407" />
+
 The project shows that **technical complexity is not required for severe security failures** when architectural decisions are inadequate.
+
+https://github.com/user-attachments/assets/9cebff35-c077-4344-8065-58381d41dcda
 
 ---
 
