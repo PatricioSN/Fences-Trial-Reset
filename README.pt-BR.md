@@ -49,6 +49,9 @@ Esta seção descreve o fluxo interno da aplicação, com o objetivo de demonstr
     O projeto inicia verificando a existência de artefatos locais utilizados pelo software analisado para representar o estado de ativação e uso do período de avaliação.
     Esses artefatos são tratados pelo sistema como fonte de verdade, sem validação externa adicional.
 
+   <img width="1265" height="673" alt="image" src="https://github.com/user-attachments/assets/af0ee104-754d-4d75-9ec6-49baa49e9b18" />
+
+
 
 **Ponto de falha evidenciado:** confiança irrestrita em estado local persistente.
 
@@ -63,7 +66,9 @@ Esta seção descreve o fluxo interno da aplicação, com o objetivo de demonstr
 3. **Automação de interações legítimas**
 
     Com o ambiente normalizado, o projeto automatiza apenas interações já previstas pela interface oficial, simulando ações de um usuário comum.
-    
+   
+    <img width="1600" height="751" alt="image" src="https://github.com/user-attachments/assets/8d7391d2-c264-428f-bfe9-a677424628a9" />
+
     Essa etapa demonstra que o sistema não diferencia interação humana de automação, nem aplica controles adicionais em fluxos críticos.
 
 **Ponto de falha evidenciado:** ausência de mecanismos anti-automação ou validação comportamental.
@@ -77,7 +82,9 @@ Esta seção descreve o fluxo interno da aplicação, com o objetivo de demonstr
 5. Resultado observado
 
     O software interpreta o novo contexto como uma execução legítima inicial, evidenciando que o mecanismo de proteção depende exclusivamente de fatores locais e previsíveis.
-    
+   
+    <img width="1600" height="241" alt="image" src="https://github.com/user-attachments/assets/4a28ce54-1c8d-471b-af4c-48e7d6226f92" />
+
     O projeto demonstra que complexidade técnica não é requisito para falhas graves, quando decisões arquiteturais inadequadas estão presentes.
 
 ---
