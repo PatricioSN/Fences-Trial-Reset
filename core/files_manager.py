@@ -4,7 +4,7 @@ import crossfiledialog
 
 
 class FilesManage:
-    DEFAULT_PATH = r"C:\ProgramData\Stardock\Fences4"
+    DEFAULT_PATH = r"C:\ProgramData\Stardock\Fences6"
     REQUIRED_FILES = {"License.sig", "Cache.dat"}
 
     def __init__(self, base_path: str | None = None):

@@ -30,7 +30,7 @@ class EmailManage:
         temp_email = Email()
         temp_email.register() #create a new random email
 
-        logging.info("\nEmail Address: " + str(temp_email.address))
+        logging.info("Email Address: " + str(temp_email.address))
         self.email = temp_email
         self.email_address = temp_email.address
 

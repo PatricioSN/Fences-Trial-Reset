@@ -1,6 +1,6 @@
 import pyautogui
 import time
-from email_manager import EmailManage
+from core.email_manager import EmailManage
 import pyperclip
 import logging
 

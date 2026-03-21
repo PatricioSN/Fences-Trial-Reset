@@ -1,5 +1,5 @@
-from fences_manager import FencesManage
-from files_manager import FilesManage
+from core.fences_manager import FencesManage
+from core.files_manager import FilesManage
 import logging
 import sys
 
@@ -23,3 +23,7 @@ class Manager:
         fences.open_fences()
         fences.start_trial()
         fences.listen_email()
+
+if __name__ == "__main__":
+    manager = Manager()
+    manager.run()
