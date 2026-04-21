@@ -18,6 +18,7 @@ class FencesManage:
         start = time.time()
         while time.time() - start < timeout:
             position = pyautogui.locateCenterOnScreen(image_path)
+            time.sleep(0.2)
             if position:
                 return position
             time.sleep(0.2)
